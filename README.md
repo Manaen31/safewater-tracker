@@ -1,35 +1,25 @@
-# 💧 SafeWater Tracker — SDG 6
+# 💧 SafeWater Tracker (SDG 6)
+A full-stack MERN web app promoting clean water management.
 
-**SafeWater Tracker** is a MERN web app to track household water usage, provide NGO/admin dashboards, and detect water shortage risk.
-
-## Live (example)
-Frontend: https://safewater-tracker.vercel.app  
-Backend:  https://safewater-tracker.onrender.com
-
-## Features
-- Role-based auth: household / NGO / admin (JWT)
-- Daily water logging
+## 🚀 Features
+- Water usage tracking
+- Role-based access (User, NGO, Admin)
 - Google Maps SafeStations
-- Charts (Chart.js)
-- Alerts when region 7-day average < threshold
-- Deployed: Render (backend) + Vercel (frontend)
+- AI alerts for water shortages
+- Secure authentication
 
-## Tech
-Frontend: React, Tailwind (optional), Chart.js, Google Maps  
-Backend: Node.js, Express, MongoDB Atlas, JWT
+## 🧩 Stack
+- MongoDB Atlas
+- Express.js
+- React
+- Node.js
+- Chart.js, Google Maps API
+- Deployed on Render + Vercel
 
-## Run locally
-1. Backend
-   - `cd server`
-   - create `.env` with `MONGO_URI`, `JWT_SECRET`, `FRONTEND_URL`
-   - `npm install`
-   - `npm run dev`
-2. Frontend
-   - `cd client`
-   - create `.env` with `REACT_APP_API_URL`, `REACT_APP_GOOGLE_MAPS_KEY`
-   - `npm install`
-   - `npm start`
+## 🌐 Live Demo
+Frontend: https://safewater-tracker.vercel.app  
+Backend: https://safewater-tracker.onrender.com
 
-## Notes for demo
-- Create three users (roles: household, ngo, admin) via `/register`.
-- Log usage (POST /api/water) and show AdminPanel alerts.
+## 👤 Developer
+Built by **Joshua Manaen**  
+Inspired by UN SDG 6: Clean Water and Sanitation
