@@ -1,59 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import AdminPanel from "./pages/AdminPanel";
 
-export default function App() {
-  const [user, setUser] = useState(null);
-  const token = localStorage.getItem("token");
+const Protected = ({ children, role }) => {
+  const { token, user, loading } = useAuth();
+  if (loading) return <div className="p-6">Checking session...</div>;
+  if (!token) return <Navigate to="/login" />;
+  if (role && user?.role !== role) return <Navigate to="/login" />;
+  return children;
+};
 
-  useEffect(() => {
-    const saved = localStorage.getItem("user");
-    if (saved) setUser(JSON.parse(saved));
-  }, []);
-
+function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            token ? (
-              user?.role === "admin" || user?.role === "ngo" ? (
-                <Navigate to="/admin" />
-              ) : (
-                <Navigate to="/dashboard" />
-              )
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/dashboard"
-          element={
-            token && user?.role === "household" ? (
-              <Dashboard />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            token && (user?.role === "admin" || user?.role === "ngo") ? (
-              <AdminPanel />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+      <Route path="/admin" element={<Protected role="admin"><AdminPanel /></Protected>} />
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </AuthProvider>
   );
 }
